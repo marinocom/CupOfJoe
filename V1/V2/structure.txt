@@ -1,7 +1,0 @@
-manifest.json - Extension configuration
-content.js - Detects coffee shops and displays price badges on Google Maps
-content.css - Styling for the price badge
-popup.html - User interface for submitting prices
-popup.js - Logic for the popup
-background.js - Handles communication with Supabase
-SETUP_INSTRUCTIONS.md - Complete setup guide
