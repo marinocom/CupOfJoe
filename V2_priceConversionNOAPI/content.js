@@ -1,48 +1,6 @@
 // Content script that runs on Google Maps pages
 // Detects coffee shops and displays price information
 
-
-const EXCHANGE_RATES = {
-  'USD': { 'EUR': 0.92, 'USD': 1 },
-  'EUR': { 'EUR': 1, 'USD': 1.09 },
-  'GBP': { 'EUR': 1.17, 'USD': 1.27 },
-  'JPY': { 'EUR': 0.0062, 'USD': 0.0068 },
-  'CAD': { 'EUR': 0.68, 'USD': 0.74 },
-  'AUD': { 'EUR': 0.60, 'USD': 0.65 },
-  'NZD': { 'EUR': 0.55, 'USD': 0.60 },
-  'CHF': { 'EUR': 1.05, 'USD': 1.14 },
-  'CNY': { 'EUR': 0.13, 'USD': 0.14 },
-  'INR': { 'EUR': 0.011, 'USD': 0.012 },
-  'SGD': { 'EUR': 0.69, 'USD': 0.75 },
-  'HKD': { 'EUR': 0.12, 'USD': 0.13 },
-  'KRW': { 'EUR': 0.00069, 'USD': 0.00075 },
-  'MYR': { 'EUR': 0.21, 'USD': 0.23 },
-  'THB': { 'EUR': 0.026, 'USD': 0.028 },
-  'IDR': { 'EUR': 0.000058, 'USD': 0.000063 },
-  'PHP': { 'EUR': 0.016, 'USD': 0.018 },
-  'VND': { 'EUR': 0.000037, 'USD': 0.000040 },
-  'MXN': { 'EUR': 0.054, 'USD': 0.059 },
-  'BRL': { 'EUR': 0.18, 'USD': 0.20 },
-  'ZAR': { 'EUR': 0.051, 'USD': 0.055 },
-  'NOK': { 'EUR': 0.088, 'USD': 0.096 },
-  'SEK': { 'EUR': 0.088, 'USD': 0.096 },
-  'DKK': { 'EUR': 0.13, 'USD': 0.14 },
-  'PLN': { 'EUR': 0.23, 'USD': 0.25 },
-  'CZK': { 'EUR': 0.040, 'USD': 0.044 },
-  'HUF': { 'EUR': 0.0026, 'USD': 0.0028 },
-  'TRY': { 'EUR': 0.032, 'USD': 0.035 },
-  'RUB': { 'EUR': 0.010, 'USD': 0.011 },
-  'ISK': { 'EUR': 0.0067, 'USD': 0.0073 },
-  'TWD': { 'EUR': 0.029, 'USD': 0.032 },
-  'CLP': { 'EUR': 0.0010, 'USD': 0.0011 },
-  'ARS': { 'EUR': 0.0010, 'USD': 0.0011 },
-  'COP': { 'EUR': 0.00023, 'USD': 0.00025 },
-  'PEN': { 'EUR': 0.24, 'USD': 0.26 },
-  'ILS': { 'EUR': 0.25, 'USD': 0.27 },
-  'AED': { 'EUR': 0.25, 'USD': 0.27 },
-  'SAR': { 'EUR': 0.24, 'USD': 0.27 }
-};
-
 let cached_rates = {};
 
 async function getExchangeRate(fromCurrency, toCurrency) {
