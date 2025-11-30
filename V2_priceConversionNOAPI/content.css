@@ -14,6 +14,13 @@
   animation: slideIn 0.3s ease-out;
 }
 
+.coffee-image {
+  width: 2.15em;
+  height: 2.15em;
+  position: relative;
+  bottom: 0.075em;
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;

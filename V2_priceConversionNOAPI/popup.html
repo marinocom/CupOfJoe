@@ -254,13 +254,21 @@
       font-weight: 600;
       margin-left: 6px;
     }
+    .title {
+      display: flex;
+      flex-direction: row;
+    }
+    .coffee-image {
+      height: 1em;
+      width: 1em;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <button class="settings-button" id="settingsButton" title="Settings">⚙️</button>
-      <h1>☕ How much for a Cup of Joe?</h1>
+      <div class="title"><img class="coffee-image" src="icons/icon128.png"> How much for a Cup of Joe?</div>
       <p>Help the community find (Cheap) great coffee</p>
     </div>
 

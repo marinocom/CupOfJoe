@@ -208,7 +208,7 @@ async function handleSubmit(e) {
       price: price,
       currencyCode: currentCurrency
     });
-    
+
     if (response && response.success) {
       showSuccess(`Price submitted successfully! (${formatPrice(price, currentCurrency)})`);
       priceInput.value = '';

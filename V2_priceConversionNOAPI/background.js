@@ -1,7 +1,7 @@
 // Background service worker - handles Supabase communication
 
-let supabaseUrl = '';
-let supabaseKey = '';
+let supabaseUrl = 'https://nmqnvjoablnfaqitdcrx.supabase.co';
+let supabaseKey = 'sb_publishable_g09edIDiAnUtT5pL8u-KSw_fu7gwKAN';
 
 chrome.runtime.onInstalled.addListener(async () => {
   console.log('Coffee Price Tracker installed');
@@ -34,6 +34,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log("got message")
   if (request.action === 'getPrice') {
     handleGetPrice(request.placeId).then(sendResponse);
     return true;
@@ -55,7 +56,7 @@ async function handleGetPrice(placeId) {
   
   try {
     const response = await fetch(
-      `${supabaseUrl}/rest/v1/rpc/get_average_price`,
+      `${supabaseUrl}/rest/v1/rpc/get_iqr_price`,
       {
         method: 'POST',
         headers: {
@@ -93,10 +94,11 @@ async function handleGetPrice(placeId) {
 }
 
 async function handleSubmitPrice(placeId, placeName, price, currencyCode) {
+  console.log(supabaseUrl)
+  console.log(supabaseKey)
   if (!supabaseUrl || !supabaseKey) {
     return { success: false, error: 'Supabase not configured' };
   }
-  
   try {
     const response = await fetch(
       `${supabaseUrl}/rest/v1/price_submissions`,
@@ -117,6 +119,10 @@ async function handleSubmitPrice(placeId, placeName, price, currencyCode) {
       }
     );
     
+    console.log(response)
+    response.json().then((m)=>{
+      console.log(m);
+    })
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
