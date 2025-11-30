@@ -41,29 +41,6 @@ function formatPrice(price, currencyCode) {
   }
 }
 
-// Update price input based on currency
-function updatePriceInput() {
-  const priceInput = document.getElementById('priceInput');
-  const priceWrapper = document.querySelector('.price-input-wrapper');
-  
-  // Update the currency symbol in the input
-  const symbol = getCurrencySymbol(currentCurrency);
-  priceWrapper.setAttribute('data-symbol', symbol);
-  
-  // Update step and placeholder based on currency
-  if (isZeroDecimalCurrency(currentCurrency)) {
-    priceInput.step = '1';
-    priceInput.placeholder = '500';
-  } else {
-    priceInput.step = '0.01';
-    priceInput.placeholder = '5.00';
-  }
-  
-  // Update label to show currency
-  const label = document.querySelector('label[for="priceInput"]');
-  label.textContent = `Coffee Price (${currentCurrency})`;
-}
-
 // Initialize popup
 async function init() {
   console.log('Popup initialized');
@@ -92,7 +69,6 @@ async function init() {
     currentPlaceAddress = stored.currentPlace.address;
     currentCurrency = stored.currentPlace.currencyCode || 'USD';
     showMainContent();
-    updatePriceInput();
     loadExistingPrice();
     return;
   }
@@ -117,124 +93,25 @@ async function init() {
   }
 }
 
-// Show setup warning
-function showSetupWarning() {
-  document.getElementById('setupWarning').style.display = 'block';
-  document.getElementById('loadingState').style.display = 'none';
-  document.getElementById('notOnMaps').style.display = 'none';
-  document.getElementById('mainContent').style.display = 'none';
-}
 
-// Show "not on maps" message
-function showNotOnMaps() {
-  document.getElementById('setupWarning').style.display = 'none';
-  document.getElementById('loadingState').style.display = 'none';
-  document.getElementById('notOnMaps').style.display = 'block';
-  document.getElementById('mainContent').style.display = 'none';
-}
-
-// Show main content
-function showMainContent() {
-  document.getElementById('setupWarning').style.display = 'none';
-  document.getElementById('loadingState').style.display = 'none';
-  document.getElementById('notOnMaps').style.display = 'none';
-  document.getElementById('mainContent').style.display = 'block';
-  
-  // Update place info
-  document.getElementById('placeName').textContent = currentPlaceName || 'Unknown Place';
-  document.getElementById('placeAddress').textContent = currentPlaceAddress || '';
-}
-
-// Load existing price data
-async function loadExistingPrice() {
-  if (!currentPlaceId) return;
-  
-  try {
-    const response = await chrome.runtime.sendMessage({
-      action: 'getPrice',
-      placeId: currentPlaceId
+async function saveSettings(e) {
+    e.preventDefault();
+    
+    const preferredCurrency = document.getElementById('preferredCurrency').value;
+    
+    await chrome.storage.local.set({
+      preferredCurrency
     });
     
-    if (response && response.success && response.data) {
-      // Use the currency from the data if available, otherwise use detected currency
-      const currency = response.data.currencyCode || currentCurrency;
-      
-      // Show stats
-      document.getElementById('statsSection').style.display = 'block';
-      const formattedPrice = formatPrice(response.data.avgPrice, currency);
-      document.getElementById('avgPrice').textContent = formattedPrice;
-      document.getElementById('reviewCount').textContent = 
-        `${response.data.count} ${response.data.count === 1 ? 'submission' : 'submissions'}`;
-    }
-  } catch (error) {
-    console.error('Error loading price:', error);
-  }
+    // Show success message
+    const successMessage = document.getElementById('successMessage');
+    successMessage.classList.add('show');
+    
+    setTimeout(() => {
+      successMessage.classList.remove('show');
+    }, 3000);
 }
 
-// Handle form submission
-async function handleSubmit(e) {
-  e.preventDefault();
-  
-  const priceInput = document.getElementById('priceInput');
-  let price = parseFloat(priceInput.value);
-  
-  if (!price || price <= 0) {
-    showError('Please enter a valid price');
-    return;
-  }
-  
-  // Round for zero-decimal currencies
-  if (isZeroDecimalCurrency(currentCurrency)) {
-    price = Math.round(price);
-  } else {
-    price = parseFloat(price.toFixed(2));
-  }
-  
-  if (!currentPlaceId || !currentPlaceName) {
-    showError('Place information not available');
-    return;
-  }
-  
-  // Disable submit button
-  const submitBtn = document.getElementById('submitBtn');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting...';
-  
-  try {
-    const response = await chrome.runtime.sendMessage({
-      action: 'submitPrice',
-      placeId: currentPlaceId,
-      placeName: currentPlaceName,
-      price: price,
-      currencyCode: currentCurrency
-    });
-
-    if (response && response.success) {
-      showSuccess(`Price submitted successfully! (${formatPrice(price, currentCurrency)})`);
-      priceInput.value = '';
-      
-      // Reload price data
-      setTimeout(() => {
-        loadExistingPrice();
-        
-        // Notify content script to refresh
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs[0]) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'refreshPrice' });
-          }
-        });
-      }, 500);
-    } else {
-      showError(response.error || 'Failed to submit price');
-    }
-  } catch (error) {
-    console.error('Error submitting price:', error);
-    showError('Failed to submit price. Please try again.');
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Price';
-  }
-}
 
 // Show error message
 function showError(message) {
@@ -259,12 +136,8 @@ function showSuccess(message) {
 }
 
 // Event listeners
-document.getElementById('priceForm').addEventListener('submit', handleSubmit);
+document.getElementById('settingsForm').addEventListener('submit', saveSettings);
 
-// Settings button handler
-document.getElementById('settingsButton').addEventListener('click', () => {
-  chrome.runtime.openOptionsPage();
-});
 
 // Initialize when popup opens
 init();

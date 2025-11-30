@@ -23,28 +23,6 @@
       border-radius: 0;
     }
 
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      text-align: center;
-      position: relative;
-    }
-
-    .header h1 {
-      font-size: 20px;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .header p {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-
     .settings-button {
       position: absolute;
       top: 12px;
@@ -61,6 +39,13 @@
       justify-content: center;
       transition: all 0.2s ease;
       font-size: 16px;
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+    *, *::before, *::after {
+      box-sizing: inherit;
     }
 
     .settings-button:hover {
@@ -254,13 +239,79 @@
       font-weight: 600;
       margin-left: 6px;
     }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      gap: 2em;
+      justify-content: center;
+      align-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 10px;
+    }
+
+    .coffee-image {
+      width: 2.15em;
+      height: 2.15em;
+      position: relative;
+      bottom: 0.075em;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .coffee-image {
+      width: 2.15em;
+      height: 2.15em;
+    }
+
+    .success-message {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #c3e6cb;
+      font-size: 14px;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>☕ How much for a Cup of Joe?</h1>
-      <p>Help the community find (Cheap) great coffee</p>
+      <div class="header-left">
+        <img class="coffee-image" src="icons/icon160.png">
+      </div>
+      <div class="header-right">
+        <h2>How much for a Cup of Joe?</h2>
+        <p>Help the community find (Cheap) great coffee</p>
+      </div>
     </div>
 
     <div class="content">
@@ -283,6 +334,11 @@
             Save Settings
           </button>
         </form>
+        
+        <div class="success-message" id="successMessage">
+          ✓ Settings saved successfully!
+        </div>
+
       </div>
     </div>
   </div>
