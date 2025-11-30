@@ -57,6 +57,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 
 async function handleGetExchangeRate(from_currency, to_currency) {
+  console.log("doing fetch", JSON.stringify({ 
+          from_currency: from_currency,
+          to_currency: to_currency
+        }));
   const response = await fetch(
       `${supabaseUrl}/rest/v1/rpc/get_exchange_rate`,
       {
@@ -77,7 +81,7 @@ async function handleGetExchangeRate(from_currency, to_currency) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
+    console.log(response);
     const data = await response.json();
     console.log(data);
     return data;
