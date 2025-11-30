@@ -317,7 +317,9 @@ function checkIfCoffeeShop() {
       placeName.includes('roasters') ||
       placeName.includes('cafe') ||
       placeName.includes('café') ||
-      placeName.includes('kave')
+      placeName.includes('kave') || 
+      placeName.includes('kaffee') ||
+      placeName.includes('bakery')
     );
   
   console.log('☕ Is coffee shop:', isCoffeeShop);
