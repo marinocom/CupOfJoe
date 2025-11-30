@@ -23,6 +23,8 @@ async function getExchangeRate(fromCurrency, toCurrency) {
     toCurrency: toCurrency
   });
 
+  console.log("ret", ret)
+
   cached_rates[cache_key] = ret;
   return ret;
 }
@@ -467,6 +469,7 @@ async function displayPriceBadge(placeInfo, priceData) {
   let convertedPriceHTML = '';
   if (priceData && priceData.avgPrice && preferredCurrency !== 'none' && currency !== preferredCurrency) {
     const convertedAmount = await convertPrice(priceData.avgPrice, currency, preferredCurrency);
+    console.log(currency, preferredCurrency, cached_rates)
     if (convertedAmount) {
       const convertedFormatted = formatPrice(convertedAmount, preferredCurrency);
       convertedPriceHTML =`<span class="price-badge-converted">≈${convertedFormatted}</span>`;

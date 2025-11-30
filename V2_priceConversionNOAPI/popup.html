@@ -254,74 +254,35 @@
       font-weight: 600;
       margin-left: 6px;
     }
-    .title {
-      display: flex;
-      flex-direction: row;
-    }
-    .coffee-image {
-      height: 1em;
-      width: 1em;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <button class="settings-button" id="settingsButton" title="Settings">⚙️</button>
-      <div class="title"><img class="coffee-image" src="icons/icon128.png"> How much for a Cup of Joe?</div>
+      <h1>☕ How much for a Cup of Joe?</h1>
       <p>Help the community find (Cheap) great coffee</p>
     </div>
 
     <div class="content">
-      <div id="setupWarning" class="setup-needed" style="display: none;">
-        <strong>⚠️ Setup Required</strong>
-        Please configure your Supabase credentials in the extension options.
-      </div>
 
-      <div id="loadingState" class="loading" style="display: none;">
-        Loading...
-      </div>
 
-      <div id="notOnMaps" class="not-on-maps" style="display: none;">
-        <div class="not-on-maps-icon">🗺️</div>
-        <p>Please open a coffee shop on Google Maps to submit a price.</p>
-      </div>
-
-      <div id="mainContent" style="display: none;">
-        <div class="place-info">
-          <div class="place-name" id="placeName">Loading...</div>
-          <div class="place-address" id="placeAddress"></div>
-        </div>
-
-        <div class="error" id="errorMessage"></div>
-        <div class="success" id="successMessage"></div>
-
-        <form id="priceForm">
+      <div id="mainContent">
+        <form id="settingsForm">
           <div class="form-group">
-            <label for="priceInput">Coffee Price</label>
-            <div class="price-input-wrapper" data-symbol="$">
-              <input 
-                type="number" 
-                id="priceInput" 
-                step="0.01" 
-                min="0" 
-                max="100000" 
-                placeholder="5.00"
-                required
-              >
-            </div>
+            <label>
+              Preferred Currency
+            </label>
+            <select id="preferredCurrency" class="currency-select">
+              <option value="none">None (show local currency only)</option>
+              <option value="EUR" selected>Euro (€)</option>
+              <option value="USD">US Dollar ($)</option>
+            </select>
           </div>
 
-          <button type="submit" class="button" id="submitBtn">
-            Submit Price
+          <button type="submit" class="button">
+            Save Settings
           </button>
         </form>
-
-        <div class="stats" id="statsSection" style="display: none;">
-          <div class="stats-title">Current Average</div>
-          <div class="stats-price" id="avgPrice">-</div>
-          <div class="stats-count" id="reviewCount">-</div>
-        </div>
       </div>
     </div>
   </div>
