@@ -79,6 +79,7 @@ async function convertPrice(amount, fromCurrency, toCurrency) {
 }
 
 let currentPlaceId = null;
+let previousPlaceName = null;
 let currentPlaceName = null;
 let currentCurrency = 'USD';
 let checkInterval = null;
@@ -100,10 +101,9 @@ function startChecking() {
   // Check immediately
   checkIfCoffeeShop();
   
-  // Then check every 1 seconds (only if we haven't found a place yet)
+  // Then check every 1 seconds
   if (checkInterval) clearInterval(checkInterval);
   checkInterval = setInterval(() => {
-    // Stop checking if we've already found a coffee shop
     if (currentPlaceId) {
       console.log('☕ Already tracking a coffee shop, stopping checks');
       clearInterval(checkInterval);
@@ -303,11 +303,6 @@ function getCurrencyFromCountry(countryString) {
 
 // Check if the current place is a coffee shop
 function checkIfCoffeeShop() {
-  console.log('☕ Checking if this is a coffee shop...');
-  
-  // Detect currency first
-  currentCurrency = detectCurrency();
-  console.log('☕ Current currency:', currentCurrency);
   
   // Get the place name and category information
   const titleElement = 
@@ -317,6 +312,19 @@ function checkIfCoffeeShop() {
     document.querySelector('.qBF1Pd');
   
   const placeName = titleElement ? titleElement.innerText.toLowerCase() : '';
+
+  if (previousPlaceName && placeName == previousPlaceName) {
+    // don't bother fetching anything if it's the same shop we were on 1 second ago
+    return;
+  }
+
+  previousPlaceName = placeName;
+  
+  console.log('☕ Checking if this is a coffee shop...');
+  
+  // Detect currency
+  currentCurrency = detectCurrency();
+  console.log('☕ Current currency:', currentCurrency);
   
   // Look for category/type information (usually near the title)
   const categoryElement = 
@@ -362,7 +370,7 @@ function checkIfCoffeeShop() {
       if (currentPlaceId !== placeInfo.id) {
         currentPlaceId = placeInfo.id;
         currentPlaceName = placeInfo.name;
-        
+
         // Store current place with currency for popup
         chrome.storage.local.set({
           currentPlace: {
