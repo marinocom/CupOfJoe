@@ -60,7 +60,7 @@ Just search 'How much for a Cup of Joe?' and hit install.
 ```
 CupOfJoe/
 ├── manifest.json         # Extension configuration
-├── src/
+├── How much for a Cup of Joe?/
 │   ├── content.js        # Content script for Maps integration
 │   ├── background.js     # Background service worker
 │   ├── content.css       # Styling 
