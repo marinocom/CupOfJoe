@@ -96,7 +96,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Marino Oliveros**
 - GitHub: [marinocom](https://github.com/marinocom)
-- LinkedIn: [Marino O.](www.linkedin.com/in/marino-o-3a6b171b9)
+- LinkedIn: [Marino O.]([www.linkedin.com/in/marino-o-3a6b171b9)
 
 Have questions, suggestions, or café recommendations? Feel free to open an issue or reach out! -> marino.oliverosblanco@gmail.com
 
