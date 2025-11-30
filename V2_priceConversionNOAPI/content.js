@@ -43,15 +43,39 @@ const EXCHANGE_RATES = {
   'SAR': { 'EUR': 0.24, 'USD': 0.27 }
 };
 
-// Convert price between currencies
-function convertPrice(amount, fromCurrency, toCurrency) {
-  if (fromCurrency === toCurrency) return amount;
-  
-  if (EXCHANGE_RATES[fromCurrency] && EXCHANGE_RATES[fromCurrency][toCurrency]) {
-    return amount * EXCHANGE_RATES[fromCurrency][toCurrency];
+let cached_rates = {};
+
+async function getExchangeRate(fromCurrency, toCurrency) {
+  let cache_key = fromCurrency + "-" + toCurrency;
+
+  if (cached_rates[cache_key]) {
+    chrome.runtime.sendMessage({
+      action: 'getExchangeRate',
+      fromCurrency: fromCurrency,
+      toCurrency: toCurrency
+    }).then((rate)=>{
+      cached_rates[cache_key] = rate;
+    });
+    return cached_rates[cache_key];
   }
+
+  let ret = await chrome.runtime.sendMessage({
+    action: 'getExchangeRate',
+    fromCurrency: fromCurrency,
+    toCurrency: toCurrency
+  });
+
+  cached_rates[cache_key] = ret;
+  return ret;
+}
+
+// Convert price between currencies
+async function convertPrice(amount, fromCurrency, toCurrency) {
+  if (fromCurrency === toCurrency) return amount;
+
+  let rate = await getExchangeRate(fromCurrency, toCurrency);
   
-  return null;
+  return amount * rate;
 }
 
 let currentPlaceId = null;
@@ -476,7 +500,7 @@ async function displayPriceBadge(placeInfo, priceData) {
   // Generate converted price HTML if applicable
   let convertedPriceHTML = '';
   if (priceData && priceData.avgPrice && preferredCurrency !== 'none' && currency !== preferredCurrency) {
-    const convertedAmount = convertPrice(priceData.avgPrice, currency, preferredCurrency);
+    const convertedAmount = await convertPrice(priceData.avgPrice, currency, preferredCurrency);
     if (convertedAmount) {
       const convertedFormatted = formatPrice(convertedAmount, preferredCurrency);
       convertedPriceHTML =`<span class="price-badge-converted">≈${convertedFormatted}</span>`;
@@ -513,6 +537,7 @@ async function displayPriceBadge(placeInfo, priceData) {
     badge.innerHTML = `
       <div class="price-badge-content">
         <img class="coffee-image" src=${chrome.runtime.getURL("icons/icon160.png")}>
+        <div class="price-badge-info">
           <div class="price-badge-label">No price data yet</div>
           <div class="price-badge-message">Be the first to add!</div>
         </div>

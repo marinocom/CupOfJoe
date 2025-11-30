@@ -46,8 +46,42 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       request.currencyCode || 'USD'
     ).then(sendResponse);
     return true;
+  } else if (request.action === 'getExchangeRate') {
+    handleGetExchangeRate(
+      request.fromCurrency,
+      request.toCurrency
+    ).then(sendResponse);
+    return true;
   }
 });
+
+
+async function handleGetExchangeRate(from_currency, to_currency) {
+  const response = await fetch(
+      `${supabaseUrl}/rest/v1/rpc/get_exchange_rate`,
+      {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({ 
+          from_currency: from_currency,
+          to_currency: to_currency
+        })
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+} 
 
 async function handleGetPrice(placeId) {
   if (!supabaseUrl || !supabaseKey) {
