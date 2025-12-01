@@ -35,7 +35,7 @@ Just search 'How much for a Cup of Joe?' and hit install.
 
 5. The extension icon should now appear in your Chrome toolbar
 
-### How to Use
+## How to Use
 
 1. **Navigate to Google Maps**: Open [Google Maps](https://maps.google.com) in your Chrome browser
 
@@ -46,6 +46,25 @@ Just search 'How much for a Cup of Joe?' and hit install.
 4. **Compare**: Browse through different locations to find the best prices
 
 5. **Add price**: After having coffee please use the add price function, to add the price and let everyone know How much for a Cup of Joe?
+
+### Examples
+
+<img src="images/790yen.png" alt="Coffee price display on Google Maps" width="450"/>
+
+*See average coffee prices directly on Google Maps listings with automatic currency conversion*
+
+**Add Your Price**
+
+<img src="images/laesquinita.png" alt="Adding a new coffee price" width="450"/>
+
+*Contribute to the community by adding prices after your coffee visit*
+
+**Compare Across Cafés**
+
+<img src="images/jete.png" alt="Map view with multiple prices" width="450"/>
+
+*Browse and compare prices across different coffee shops in your area*
+
 
 ### Stack
 
