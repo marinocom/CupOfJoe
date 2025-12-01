@@ -94,7 +94,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ##  👤 Author
 
-**Marino Oliveros**
+**Marino Oliveros Blanco**
 - GitHub: [marinocom](https://github.com/marinocom)
 - LinkedIn: [Marino O.]([[www.linkedin.com/in/marino-o-3a6b171b9](https://www.linkedin.com/in/marino-o-3a6b171b9/))
 
