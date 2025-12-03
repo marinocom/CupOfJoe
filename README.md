@@ -18,8 +18,7 @@ A Chrome extension that tracks coffee prices across different cafés on Google M
 ## Installation
 
 ### From Chrome Web Store
-Just search 'How much for a Cup of Joe?' and hit install. 
-
+Just search ['How much for a Cup of Joe?'](https://chromewebstore.google.com/detail/how-much-for-a-cup-of-joe/eekhlhcnjglbmhgdmknncpkmblngbmjg) and hit install
 ### Manual Installation (Development)
 1. Clone this repository:
    ```bash
